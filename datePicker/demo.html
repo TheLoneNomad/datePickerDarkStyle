@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./bootstrap.css">
+    <link rel="stylesheet" href="./fonts/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" media="all" href="./daterangepicker.css" />
+    <link rel="stylesheet" href="./styleGradient.css">
+</head>
+<body>
+
+<div id="input-rangePicker" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 15%">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span></span> <i class="fa fa-caret-down"></i>
+</div>
+
+<div id="input-singlePicker" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 15%" value="">
+    <i class="fa fa-calendar"></i>&nbsp;
+    <span></span> <i class="fa fa-caret-down"></i>
+</div>
+
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript" src="./moment.js"></script>
+<script type="text/javascript" src="./daterangepicker.js"></script>
+
+<script>
+    $(function() {
+        rangePicker();
+        singlePicker();
+    });
+
+    function singlePicker() {
+        const pickerElement = 'input-singlePicker';
+        $(`#${pickerElement}`).daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "applyLabel": "Применить",
+                "cancelLabel": "Отменить",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"
+                ],
+                "monthNames": [
+                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+                ],
+                "firstDay": 1
+            },
+        }, function(start, end, label) {
+            let years = moment().diff(start, 'years');
+            alert("You are " + years + " years old!");
+        });
+    }
+
+    function rangePicker() {
+        const pickerElement = 'input-rangePicker';
+        let start = moment().subtract(29, 'days');
+        let end = moment();
+
+        function cb(start, end) {
+            `#${pickerElement} span`
+            $(`#${pickerElement} span`).html(start.format('DD.MM.YYYY') + ' - ' + end.format('DD.MM.YYYY'));
+        }
+        $(`#${pickerElement}`).daterangepicker({
+            startDate: start,
+            endDate: end,
+            showDropdowns: true,
+            "locale": {
+                "format": "DD.MM.YYYY",
+                "separator": " - ",
+                "applyLabel": "Применить",
+                "cancelLabel": "Отменить",
+                "fromLabel": "От",
+                "toLabel": "До",
+                "customRangeLabel": "Период",
+                "weekLabel": "W",
+                "daysOfWeek": [
+                    "Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"
+                ],
+                "monthNames": [
+                    "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"
+                ],
+                "firstDay": 1
+            },
+            ranges: {
+                'Сегодня': [moment(), moment()],
+                'Вчера': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Последние 7 дней': [moment().subtract(6, 'days'), moment()],
+                'Последние 30 дней': [moment().subtract(29, 'days'), moment()],
+                'Этот месяц': [moment().startOf('month'), moment().endOf('month')],
+                'Прошлый месяц': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+        cb(start, end);
+    }
+</script>
+</body>
+</html>
