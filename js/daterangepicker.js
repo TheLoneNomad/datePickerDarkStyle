@@ -5,7 +5,7 @@
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
-        define(['moment', 'locale/ru', 'jquery'], function (moment, jquery) {
+        define(['datePicker/js/moment', 'locale/ru', 'jquery'], function (moment, jquery) {
             moment.locale('ru');
             if (!jquery.fn) jquery.fn = {}; // webpack server rendering
             if (typeof moment !== 'function' && moment.hasOwnProperty('default')) moment = moment['default']
@@ -19,7 +19,7 @@
             jQuery = require('jquery');
             if (!jQuery.fn) jQuery.fn = {};
         }
-        let moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('moment');
+        let moment = (typeof window != 'undefined' && typeof window.moment != 'undefined') ? window.moment : require('datePicker/js/moment');
         module.exports = factory(moment, jQuery);
     } else {
         // Browser globals
@@ -27,7 +27,7 @@
     }
 }(typeof window !== 'undefined' ? window : this, function(moment, $) {
     let DateRangePicker = function(element, options, cb) {
-        moment().lang("ru").format('L');
+        moment().localeData("ru")
         //default settings for options
         this.parentEl = 'body';
         this.element = $(element);
@@ -276,7 +276,7 @@
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
         // update day names order to firstDay
-        if (this.locale.firstDay != 0) {
+        if (this.locale.firstDay !== 0) {
             let iterator = this.locale.firstDay;
             while (iterator > 0) {
                 this.locale.daysOfWeek.push(this.locale.daysOfWeek.shift());
